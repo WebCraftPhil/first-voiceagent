@@ -1,0 +1,185 @@
+"""
+Example web client for testing the voice agent
+This demonstrates how to connect to the LiveKit room and interact with the agent
+"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Agent Test Client</title>
+    <script src="https://unpkg.com/livekit-client/dist/livekit-client.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .disconnect {
+            background-color: #f44336;
+        }
+        .disconnect:hover {
+            background-color: #da190b;
+        }
+        .status {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Voice Agent Test Client</h1>
+        <p style="text-align: center; color: #666;">
+            Connect to the AI receptionist and start a conversation
+        </p>
+        
+        <div class="controls">
+            <input 
+                type="text" 
+                id="livekit-url" 
+                placeholder="LiveKit URL (ws://localhost:7880)"
+                value="ws://localhost:7880"
+            />
+            <input 
+                type="text" 
+                id="room-token" 
+                placeholder="Room Token (get from LiveKit)"
+            />
+            <button id="connect-btn" onclick="connect()">
+                Connect to Agent
+            </button>
+            <button id="disconnect-btn" onclick="disconnect()" style="display: none;" class="disconnect">
+                Disconnect
+            </button>
+        </div>
+        
+        <div id="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        let room = null;
+        
+        function showStatus(message, type = 'status') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+        }
+        
+        async function connect() {
+            const url = document.getElementById('livekit-url').value;
+            const token = document.getElementById('room-token').value;
+            
+            if (!url || !token) {
+                showStatus('Please enter LiveKit URL and Room Token', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('Connecting to voice agent...', 'status');
+                
+                room = new LivekitClient.Room({
+                    adaptiveStream: true,
+                    dynacast: true,
+                });
+                
+                // Set up event listeners
+                room.on('connected', () => {
+                    showStatus('✅ Connected! Start speaking to the agent.', 'success');
+                    document.getElementById('connect-btn').style.display = 'none';
+                    document.getElementById('disconnect-btn').style.display = 'block';
+                });
+                
+                room.on('disconnected', () => {
+                    showStatus('Disconnected from agent', 'status');
+                    document.getElementById('connect-btn').style.display = 'block';
+                    document.getElementById('disconnect-btn').style.display = 'none';
+                });
+                
+                room.on('participantConnected', (participant) => {
+                    console.log('Participant connected:', participant.identity);
+                });
+                
+                room.on('trackSubscribed', (track, publication, participant) => {
+                    console.log('Track subscribed:', track.kind);
+                    if (track.kind === 'audio') {
+                        const audioElement = track.attach();
+                        document.body.appendChild(audioElement);
+                    }
+                });
+                
+                // Connect to room
+                await room.connect(url, token);
+                
+                // Enable microphone
+                await room.localParticipant.setMicrophoneEnabled(true);
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                showStatus('❌ Connection failed: ' + error.message, 'error');
+            }
+        }
+        
+        async function disconnect() {
+            if (room) {
+                await room.disconnect();
+                room = null;
+                showStatus('Disconnected', 'status');
+            }
+        }
+    </script>
+</body>
+</html>
