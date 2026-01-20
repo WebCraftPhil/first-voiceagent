@@ -1,6 +1,7 @@
 """
 Utilities for handling call summaries and contact management
 """
+import csv
 import json
 import os
 from datetime import datetime
@@ -71,8 +72,6 @@ class CallSummaryManager:
     
     def export_contacts_csv(self, output_file: str = "contacts.csv"):
         """Export all contact information to CSV"""
-        import csv
-        
         summaries = self.get_all_summaries()
         
         with open(output_file, 'w', newline='') as f:

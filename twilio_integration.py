@@ -3,6 +3,7 @@ Twilio Integration for Phone Connectivity
 This module will handle phone call routing through Twilio to LiveKit
 """
 
+
 # NOTE: This is a placeholder for future Twilio integration
 # To implement:
 # 1. Set up a Twilio account and get credentials
@@ -26,7 +27,7 @@ client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 # Webhook handler for incoming calls
 def handle_incoming_call(request):
-    '''Handle incoming Twilio call and route to LiveKit'''
+    """Handle incoming Twilio call and route to LiveKit"""
     response = VoiceResponse()
     
     # Connect to LiveKit room via SIP
