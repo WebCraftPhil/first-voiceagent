@@ -242,3 +242,8 @@ playwright/.cache/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Voice Agent specific
+call_summaries/
+test_summaries/
+*.csv
