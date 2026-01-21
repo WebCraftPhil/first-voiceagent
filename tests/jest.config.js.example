@@ -1,0 +1,55 @@
+// Jest configuration example for React component tests
+// Copy this to jest.config.js and customize for your project
+
+module.exports = {
+  // Test environment
+  testEnvironment: 'jsdom',
+  
+  // Setup files
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  
+  // Module name mapping (adjust paths to match your project)
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  },
+  
+  // Test match patterns
+  testMatch: [
+    '**/tests/components/**/*.test.jsx',
+    '**/tests/components/**/*.test.js',
+    '**/__tests__/**/*.js',
+  ],
+  
+  // Coverage configuration
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx}',
+    '!src/**/*.stories.{js,jsx}',
+    '!src/**/index.js',
+  ],
+  
+  // Coverage thresholds
+  coverageThresholds: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
+  
+  // Transform files
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
+  
+  // Module file extensions
+  moduleFileExtensions: ['js', 'jsx', 'json'],
+  
+  // Ignore patterns
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/build/',
+  ],
+};
