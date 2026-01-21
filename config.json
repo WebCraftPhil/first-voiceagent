@@ -1,0 +1,46 @@
+{
+  "business": {
+    "name": "Small Business Solutions",
+    "description": "A professional consulting firm",
+    "hours": "Monday-Friday 9:00 AM - 5:00 PM EST",
+    "phone": "(555) 123-4567",
+    "email": "contact@smallbusinesssolutions.com"
+  },
+  "faqs": [
+    {
+      "question": "What are your business hours?",
+      "answer": "We are open Monday through Friday, 9:00 AM to 5:00 PM Eastern Standard Time."
+    },
+    {
+      "question": "What services do you offer?",
+      "answer": "We offer business consulting, strategy development, marketing support, and operational optimization for small to medium businesses."
+    },
+    {
+      "question": "How can I schedule a consultation?",
+      "answer": "I can help you schedule a consultation right now. I'll just need to collect some basic information from you."
+    },
+    {
+      "question": "What is your pricing?",
+      "answer": "Our pricing varies based on the specific services and scope of work. During your initial consultation, we'll discuss your needs and provide a customized quote."
+    },
+    {
+      "question": "Do you offer virtual consultations?",
+      "answer": "Yes, we offer both in-person and virtual consultations via video conference."
+    }
+  ],
+  "lead_qualification": {
+    "questions": [
+      "What type of business do you have?",
+      "What challenges are you currently facing?",
+      "What is your budget range for consulting services?",
+      "When would you like to get started?"
+    ]
+  },
+  "contact_fields": [
+    "full_name",
+    "company_name",
+    "phone_number",
+    "email_address",
+    "preferred_contact_method"
+  ]
+}
